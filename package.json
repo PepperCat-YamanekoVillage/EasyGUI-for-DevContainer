@@ -1,0 +1,112 @@
+{
+  "name": "easygui-devcontainer",
+  "displayName": "EasyGUI for DevContainer",
+  "description": "Show Linux GUI applications running in a Dev Container in a VS Code editor tab, using Xpra's official HTML5 client and a self-contained Xpra/Xvfb runtime that the extension downloads into its own storage. No Dockerfile changes, no root, nothing installed on the host.",
+  "version": "0.3.0",
+  "publisher": "easygui-devcontainer",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onWebviewPanel:easyGui.display"
+  ],
+  "scripts": {
+    "build": "esbuild --bundle --platform=node --format=cjs --target=node18 --external:vscode src/extension.ts --outfile=dist/extension.js",
+    "build:test": "esbuild --bundle --platform=node --format=cjs --target=node18 --external:playwright-core test/integration.ts --outfile=dist/test/integration.js",
+    "typecheck": "tsc -p .",
+    "test": "npm run build && node test/run-tests.mjs",
+    "test:integration": "npm run build && npm run build:test && node test/run-tests.mjs --integration",
+    "package": "npm run build -- --minify && vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.6",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.0",
+    "playwright-core": "^1.48.2",
+    "typescript": "^5.6.3"
+  },
+  "keywords": [
+    "devcontainer",
+    "x11",
+    "xpra",
+    "gui",
+    "remote"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "easyGui.start",
+        "title": "Start / Show Display",
+        "category": "EasyGUI"
+      },
+      {
+        "command": "easyGui.stop",
+        "title": "Stop",
+        "category": "EasyGUI"
+      },
+      {
+        "command": "easyGui.restart",
+        "title": "Restart Backend",
+        "category": "EasyGUI"
+      },
+      {
+        "command": "easyGui.showLogs",
+        "title": "Show Logs",
+        "category": "EasyGUI"
+      }
+    ],
+    "configuration": {
+      "title": "EasyGUI for DevContainer",
+      "properties": {
+        "easyGui.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start the display server when the window opens (so DISPLAY is set in new terminals). The display tab opens with \"EasyGUI: Start / Show Display\" or the status bar item."
+        },
+        "easyGui.installRuntime": {
+          "type": "string",
+          "enum": [
+            "ask",
+            "always",
+            "never"
+          ],
+          "default": "ask",
+          "enumDescriptions": [
+            "Ask before downloading the Xpra runtime.",
+            "Download automatically when needed.",
+            "Never download (the extension stays inactive until a runtime exists)."
+          ],
+          "description": "Whether the Xpra runtime (about 35 MB, downloaded from the PepperCat-YamanekoVillage/xpra-runtime GitHub releases into the extension storage) may be downloaded automatically."
+        },
+        "easyGui.displayNumber": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "X display number to use. 0 picks the first free display from :100."
+        },
+        "easyGui.dpi": {
+          "type": "number",
+          "default": 96,
+          "minimum": 48,
+          "maximum": 384,
+          "description": "DPI reported to applications."
+        },
+        "easyGui.terminalEnvironment": {
+          "type": "boolean",
+          "default": true,
+          "description": "Set DISPLAY and XAUTHORITY in new integrated terminals so GUI applications started there appear in VS Code."
+        }
+      }
+    }
+  }
+}
