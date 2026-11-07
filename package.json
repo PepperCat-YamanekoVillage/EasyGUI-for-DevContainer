@@ -3,7 +3,7 @@
   "displayName": "EasyGUI for DevContainer",
   "description": "Show Linux GUI applications running in a Dev Container in a VS Code editor tab, using Xpra's official HTML5 client and a self-contained Xpra/Xvfb runtime that the extension downloads into its own storage. No Dockerfile changes, no root, nothing installed on the host.",
   "version": "0.3.0",
-  "publisher": "easygui-devcontainer",
+  "publisher": "PepperCat",
   "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"

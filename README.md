@@ -1,5 +1,8 @@
 # EasyGUI for DevContainer
 
+![ScreenShot of EasyGUI](assets/ss.png)
+[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=PepperCat.easygui-devcontainer)
+
 Shows Linux GUI (X11) applications running in a Dev Container in a VS Code editor tab.
 
 No Dockerfile or devcontainer.json changes, no root, nothing installed on the host. On first use the extension downloads a self-contained Xpra runtime (about 35 MB) from [xpra-runtime](https://github.com/PepperCat-YamanekoVillage/xpra-runtime) into its own storage.
